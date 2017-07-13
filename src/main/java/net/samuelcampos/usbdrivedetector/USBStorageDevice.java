@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.samuelcampos.usbdrivedectector;
+package net.samuelcampos.usbdrivedetector;
 
 import com.google.common.base.Strings;
 

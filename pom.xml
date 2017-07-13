@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.samuelcampos</groupId>
-    <artifactId>usbdrivedectector</artifactId>
+    <artifactId>usbdrivedetector</artifactId>
     <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>USB Drive Dectector</name>
+    <name>USB Drive Detector</name>
     <description>A Java library to get a list of all usb storage devices connected to the computer. It works on the three main operating systems (Windows, Linux and OS X).</description>
     <url>http://www.samuelcampos.net</url>
 

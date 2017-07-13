@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.samuelcampos.usbdrivedectector;
+package net.samuelcampos.usbdrivedetector;
 
 import com.google.common.base.Preconditions;
-import net.samuelcampos.usbdrivedectector.detectors.AbstractStorageDeviceDetector;
-import net.samuelcampos.usbdrivedectector.events.DeviceEventType;
-import net.samuelcampos.usbdrivedectector.events.IUSBDriveListener;
-import net.samuelcampos.usbdrivedectector.events.USBStorageEvent;
+
+import net.samuelcampos.usbdrivedetector.detectors.AbstractStorageDeviceDetector;
+import net.samuelcampos.usbdrivedetector.events.DeviceEventType;
+import net.samuelcampos.usbdrivedetector.events.IUSBDriveListener;
+import net.samuelcampos.usbdrivedetector.events.USBStorageEvent;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
