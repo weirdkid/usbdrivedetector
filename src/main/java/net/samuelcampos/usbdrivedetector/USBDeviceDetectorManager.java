@@ -15,8 +15,6 @@
  */
 package net.samuelcampos.usbdrivedetector;
 
-import com.google.common.base.Preconditions;
-
 import net.samuelcampos.usbdrivedetector.detectors.AbstractStorageDeviceDetector;
 import net.samuelcampos.usbdrivedetector.events.DeviceEventType;
 import net.samuelcampos.usbdrivedetector.events.IUSBDriveListener;
@@ -80,12 +78,16 @@ public class USBDeviceDetectorManager {
      * Sets the polling interval
      *
      * @param pollingInterval the interval in milliseconds to poll for the USB
-     *                        storage devices on the system.
+     *                        storage devices on the system. Must be greater than 
+     *                        0, else the pollingInterval will be set to the default value.
      */
     public synchronized void setPollingInterval(final long pollingInterval) {
-        Preconditions.checkArgument(pollingInterval > 0, "pollingInterval must be greater than 0");
-
-        currentPollingInterval = pollingInterval;
+        if(pollingInterval > 0){
+        	currentPollingInterval = pollingInterval;
+        }
+        else{
+        	currentPollingInterval = DEFAULT_POLLING_INTERVAL;
+        }
 
         if (listeners.size() > 0) {
             stop();
