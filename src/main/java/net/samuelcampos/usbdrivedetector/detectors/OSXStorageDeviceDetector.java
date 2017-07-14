@@ -18,6 +18,7 @@ package net.samuelcampos.usbdrivedetector.detectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.samuelcampos.usbdrivedetector.DiskInfo;
 import net.samuelcampos.usbdrivedetector.USBStorageDevice;
 import net.samuelcampos.usbdrivedetector.process.CommandExecutor;
 
@@ -123,7 +124,6 @@ public class OSXStorageDeviceDetector extends AbstractStorageDeviceDetector {
 
 
 	private void readDiskInfo(DiskInfo disk) {
-		// TODO Auto-generated method stub
 		
 		String command = CMD_DISKUTIL +  disk.device;
 
@@ -154,19 +154,4 @@ public class OSXStorageDeviceDetector extends AbstractStorageDeviceDetector {
 		
 	}
 	
-	private class DiskInfo{
-		
-		public DiskInfo(String device){
-			this.device = device;
-			mountPoint = "";
-			name = "";
-			isUSB = false;
-		}
-		
-		String device;
-		String mountPoint;
-		String name;
-		boolean isUSB;
-		
-	}
 }

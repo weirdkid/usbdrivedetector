@@ -18,6 +18,7 @@ package net.samuelcampos.usbdrivedetector.detectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.samuelcampos.usbdrivedetector.DiskInfo;
 import net.samuelcampos.usbdrivedetector.USBStorageDevice;
 import net.samuelcampos.usbdrivedetector.process.CommandExecutor;
 
@@ -116,20 +117,5 @@ public class LinuxStorageDeviceDetector extends AbstractStorageDeviceDetector {
         return listDevices;
     }
 
-    private class DiskInfo{
-	
-	public DiskInfo(String device){
-	    this.device = device;
-	    mountPoint = "";
-	    name = "";
-	    isUSB = false;
-	}
-	
-	String device;
-	String mountPoint;
-	String name;
-	boolean isUSB;
-	
-    }
 
 }
