@@ -20,7 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import net.samuelcampos.usbdrivedetector.USBStorageDevice;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -95,4 +97,15 @@ public abstract class AbstractStorageDeviceDetector {
 
         return null;
     }
+    
+    protected void closeCommand(Closeable c){
+    	if(c != null){
+    		try{
+    			c.close();
+    		} catch (IOException ioe){
+    			logger.error("Error closing executor: " + ioe);
+    		}
+    	}
+    }
+    
 }

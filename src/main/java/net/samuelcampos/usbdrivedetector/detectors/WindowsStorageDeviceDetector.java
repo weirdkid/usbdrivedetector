@@ -46,19 +46,24 @@ public class WindowsStorageDeviceDetector extends AbstractStorageDeviceDetector 
 
     @Override
     public List<USBStorageDevice> getStorageDevicesDevices() {
-        final ArrayList<USBStorageDevice> listDevices = new ArrayList<>();
+        final ArrayList<USBStorageDevice> listDevices = new ArrayList<USBStorageDevice>();
 
-        try (CommandExecutor commandExecutor = new CommandExecutor(CMD_WMI_USB)) {
-            commandExecutor.processOutput(outputLine -> {
-                if (!outputLine.isEmpty() && !"DeviceID".equals(outputLine)) {
+        CommandExecutor commandExecutor = null;
+        
+        try{
+        	commandExecutor = new CommandExecutor(CMD_WMI_USB);
+        	String outputLine = null;
+    		while((outputLine = commandExecutor.readOutputLine()) != null){
+    			if (!outputLine.isEmpty() && !"DeviceID".equals(outputLine)) {
                     final String rootPath = outputLine + File.separatorChar;
                     listDevices.add(getUSBDevice(rootPath, getDeviceName(rootPath)));
                 }
-            });
-
+    		}
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
+        
+        closeCommand(commandExecutor);
 
         return listDevices;
     }
@@ -82,57 +87,4 @@ public class WindowsStorageDeviceDetector extends AbstractStorageDeviceDetector 
         return name;
     }
 
-    /**
-     * Returns the list of the removable devices actually connected to the computer. <br/>
-     * This method was effectively tested on:
-     * <ul>
-     * <li>Windows 7 (English)</li>
-     * </ul>
-     *
-     * @deprecated replaced by {@link #getWindowsRemovableDevicesCommand()}
-     *
-     * @return the list of removable devices
-     */
-//    @SuppressWarnings("unused")
-//    private ArrayList<USBStorageDevice> getWindowsRemovableDevicesList() {
-//
-//        /**
-//         * TODO: How to put this working in all languages?
-//         */
-//        String fileSystemDesc = "Removable Disk";
-//
-//        ArrayList<USBStorageDevice> listDevices = new ArrayList<USBStorageDevice>();
-//
-//        File[] roots = File.listRoots();
-//
-//        if (roots == null) {
-//            // TODO: raise an error?
-//            return listDevices;
-//        }
-//
-//        for (File root : roots) {
-//            if (root.canRead() && root.canWrite() && fsView.isDrive(root)
-//                    && !fsView.isFloppyDrive(root)) {
-//
-//                if (fileSystemDesc.equalsIgnoreCase(fsView
-//                        .getSystemTypeDescription(root))) {
-//                    USBStorageDevice device = new USBStorageDevice(root,
-//                            fsView.getSystemDisplayName(root));
-//                    listDevices.add(device);
-//                }
-//
-//                System.out.println(fsView.getSystemDisplayName(root) + " - "
-//                        + fsView.getSystemTypeDescription(root));
-//
-//                /*
-//                 * FileSystemView.getSystemTypeDescription();
-//                 * 
-//                 * Windows (8): Windows (7): "Removable Disk" Windows (XP):
-//                 * Linux (Ubuntu): OSX (10.7):
-//                 */
-//            }
-//        }
-//
-//        return listDevices;
-//    }
 }

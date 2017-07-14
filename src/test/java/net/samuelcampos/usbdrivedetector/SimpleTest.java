@@ -13,7 +13,9 @@ public class SimpleTest implements IUSBDriveListener{
         System.out.println("Start Test");
 		USBDeviceDetectorManager driveDetector = new USBDeviceDetectorManager();
 
-        driveDetector.getRemovableDevices().forEach(System.out::println);
+        for(USBStorageDevice device : driveDetector.getRemovableDevices()){
+        	System.out.println(device);
+        }
         
         SimpleTest sTest = new SimpleTest();
         

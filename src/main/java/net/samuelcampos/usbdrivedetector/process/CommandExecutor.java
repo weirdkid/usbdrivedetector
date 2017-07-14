@@ -19,8 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+
 
 /**
  *
@@ -43,25 +42,25 @@ public class CommandExecutor implements Closeable {
         input = new BufferedReader(new InputStreamReader(process.getInputStream()));
     }
 
-    public void processOutput(final Consumer<String> method) throws IOException{
-        String outputLine;
-        while ((outputLine = this.readOutputLine()) != null) {
-            method.accept(outputLine);
-        }
-    }
+//    public void processOutput(final Consumer<String> method) throws IOException{
+//        String outputLine;
+//        while ((outputLine = this.readOutputLine()) != null) {
+//            method.accept(outputLine);
+//        }
+//    }
+//
+//    public boolean checkOutput(final Predicate<String> method) throws IOException{
+//        String outputLine;
+//        while ((outputLine = this.readOutputLine()) != null) {
+//            if (method.test(outputLine)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
-    public boolean checkOutput(final Predicate<String> method) throws IOException{
-        String outputLine;
-        while ((outputLine = this.readOutputLine()) != null) {
-            if (method.test(outputLine)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private String readOutputLine() throws IOException {
+    public String readOutputLine() throws IOException {
         if(input == null) {
             throw new IllegalStateException("You need to call 'executeCommand' method first");
         }

@@ -80,13 +80,15 @@ public class OSXStorageDeviceDetector extends AbstractStorageDeviceDetector {
     
     @Override
     public List<USBStorageDevice> getStorageDevicesDevices() {
-        final ArrayList<USBStorageDevice> listDevices = new ArrayList<>();
+        final ArrayList<USBStorageDevice> listDevices = new ArrayList<USBStorageDevice>();
         
         if(macosVersion >= MACOSX_MOUNTAINLION){
-        	try (CommandExecutor commandExecutor = new CommandExecutor(CMD_DF)) {
-        		
-        		commandExecutor.processOutput((String outputLine) -> {
-                    String[] parts = outputLine.split("\\s");
+        	CommandExecutor commandExecutor = null;
+        	try{
+        		commandExecutor = new CommandExecutor(CMD_DF);
+        		String outputLine = null;
+        		while((outputLine = commandExecutor.readOutputLine()) != null){
+        			String[] parts = outputLine.split("\\s");
                     String device = parts[0];
 
                     if(device.startsWith(DISK_PREFIX)){
@@ -97,26 +99,28 @@ public class OSXStorageDeviceDetector extends AbstractStorageDeviceDetector {
                     		listDevices.add(new USBStorageDevice(new File(disk.mountPoint), disk.name));
                     	}
                     }
-        			
-        		});
-
+        		}
         	} catch (IOException e) {
         		logger.error(e.getMessage(), e);
         	}
+        	closeCommand(commandExecutor);
         }
         else{
-        	try (CommandExecutor commandExecutor = new CommandExecutor(CMD_SYSTEM_PROFILER_USB)) {
-        		commandExecutor.processOutput(outputLine -> {
+        	CommandExecutor commandExecutor = null;
+        	try{
+        		commandExecutor = new CommandExecutor(CMD_SYSTEM_PROFILER_USB);
+        		String outputLine = null;
+        		while((outputLine = commandExecutor.readOutputLine()) != null){
         			final Matcher matcher = macOSXPattern_MOUNT.matcher(outputLine);
 
         			if (matcher.matches()) {
         				listDevices.add(getUSBDevice(matcher.group(1)));
         			}
-        		});
-
+        		}
         	} catch (IOException e) {
         		logger.error(e.getMessage(), e);
         	}
+        	closeCommand(commandExecutor);
         }
 
         return listDevices;
@@ -126,12 +130,13 @@ public class OSXStorageDeviceDetector extends AbstractStorageDeviceDetector {
 	private void readDiskInfo(DiskInfo disk) {
 		
 		String command = CMD_DISKUTIL +  disk.device;
-
-		try (CommandExecutor commandExecutor = new CommandExecutor(command)) {
-			
-    		commandExecutor.processOutput(outputLine -> {
-    			
-    			String[] parts = outputLine.split(":");
+		CommandExecutor commandExecutor = null;
+		
+		try{ 
+			commandExecutor = new CommandExecutor(command);
+			String outputLine = null;
+			while((outputLine = commandExecutor.readOutputLine()) != null){
+				String[] parts = outputLine.split(":");
     			
     			if(parts.length > 1){
     				if(INFO_MOUNTPOINT.equals(parts[0].trim())){
@@ -144,13 +149,12 @@ public class OSXStorageDeviceDetector extends AbstractStorageDeviceDetector {
     					disk.name = parts[1].trim();
     				}
     			}
-    			
-    			
-    		});
-
+			}
     	} catch (IOException e) {
     		logger.error(e.getMessage(), e);
     	}
+		
+		closeCommand(commandExecutor);
 		
 	}
 	

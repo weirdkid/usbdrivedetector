@@ -55,65 +55,75 @@ public class LinuxStorageDeviceDetector extends AbstractStorageDeviceDetector {
 
 
     private void readDiskInfo(DiskInfo disk) {
-	
-	String command = CMD_CHECK_USB + disk.device;
 
-	try (CommandExecutor commandExecutor = new CommandExecutor(command)) {
-		
-		commandExecutor.processOutput(outputLine -> {
-			
-			String[] parts = outputLine.split("="); 
+    	String command = CMD_CHECK_USB + disk.device;
+    	CommandExecutor commandExecutor = null;
 
-			if(parts.length > 1){
-			    if(INFO_BUS.equals(parts[0].trim())){
-				disk.isUSB = INFO_USB.equals(parts[1].trim());
-			    }
-			    else if(INFO_NAME.equals(parts[0].trim())){
-				disk.name = parts[1].trim();
-			    }
-			}
-		   
-		    });
+    	try{ 
+    		commandExecutor = new CommandExecutor(command);
+    		String outputLine = null;
+    		
+    		while((outputLine = commandExecutor.readOutputLine()) != null){
 
-	    } catch (IOException e) {
-	    logger.error(e.getMessage(), e);
-	}
-	
+    			String[] parts = outputLine.split("="); 
+
+    			if(parts.length > 1){
+    				if(INFO_BUS.equals(parts[0].trim())){
+    					disk.isUSB = INFO_USB.equals(parts[1].trim());
+    				}
+    				else if(INFO_NAME.equals(parts[0].trim())){
+    					disk.name = parts[1].trim();
+    				}
+    			}
+
+    		}
+
+    	} catch (IOException e) {
+    		logger.error(e.getMessage(), e);
+    	}
+    	
+    	closeCommand(commandExecutor);
     }
     
 
     @Override
     public List<USBStorageDevice> getStorageDevicesDevices() {
-        final ArrayList<USBStorageDevice> listDevices = new ArrayList<>();
+        final ArrayList<USBStorageDevice> listDevices = new ArrayList<USBStorageDevice>();
 
-        try (CommandExecutor commandExecutor = new CommandExecutor(CMD_DF)){
-            commandExecutor.processOutput((String outputLine) -> {
-                final Matcher matcher = command1Pattern.matcher(outputLine);
+        
+        CommandExecutor commandExecutor = null;
+        
+        try{
+        	commandExecutor = new CommandExecutor(CMD_DF);
+        	String outputLine = null;
+        	while((outputLine = commandExecutor.readOutputLine()) != null){
+        		final Matcher matcher = command1Pattern.matcher(outputLine);
 
-                if (matcher.matches()) {
+        		if (matcher.matches()) {
 
-		    // device name, like /dev/sdh1
-                    final String device = matcher.group(1);
+        			// device name, like /dev/sdh1
+        			final String device = matcher.group(1);
 
-		    // mount point, like /media/usb
-                    final String rootPath = matcher.group(2);
+        			// mount point, like /media/usb
+        			final String rootPath = matcher.group(2);
 
-		    if(device.startsWith(DISK_PREFIX)){
-			DiskInfo disk = new DiskInfo(device);
-			disk.mountPoint = rootPath;
-			readDiskInfo(disk);
-				      
-			if(disk.isUSB){
-			    listDevices.add(new USBStorageDevice(new File(disk.mountPoint), disk.name));
-			}
-		    }
-                }
-            });
+        			if(device.startsWith(DISK_PREFIX)){
+        				DiskInfo disk = new DiskInfo(device);
+        				disk.mountPoint = rootPath;
+        				readDiskInfo(disk);
 
+        				if(disk.isUSB){
+        					listDevices.add(new USBStorageDevice(new File(disk.mountPoint), disk.name));
+        				}
+        			}
+        		}
+        	}
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
 
+        closeCommand(commandExecutor);
+        
         return listDevices;
     }
 

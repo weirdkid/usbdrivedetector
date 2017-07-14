@@ -68,8 +68,8 @@ public class USBDeviceDetectorManager {
      *                        storage devices on the system.
      */
     public USBDeviceDetectorManager(final long pollingInterval) {
-        listeners = new ArrayList<>();
-        connectedDevices = new HashSet<>();
+        listeners = new ArrayList<IUSBDriveListener>();
+        connectedDevices = new HashSet<USBStorageDevice>();
 
         currentPollingInterval = pollingInterval;
     }
@@ -178,7 +178,7 @@ public class USBDeviceDetectorManager {
      * @param currentConnectedDevices a list with the currently connected USB storage devices
      */
     private void updateConnectedDevices(final List<USBStorageDevice> currentConnectedDevices) {
-        final List<USBStorageDevice> removedDevices = new ArrayList<>();
+        final List<USBStorageDevice> removedDevices = new ArrayList<USBStorageDevice>();
 
         synchronized (this) {
             final Iterator<USBStorageDevice> itConnectedDevices = connectedDevices.iterator();
@@ -197,12 +197,15 @@ public class USBDeviceDetectorManager {
 
             connectedDevices.addAll(currentConnectedDevices);
         }
-
-        currentConnectedDevices.forEach(device ->
-                sendEventToListeners(new USBStorageEvent(device, DeviceEventType.CONNECTED)));
-
-        removedDevices.forEach(device ->
-                sendEventToListeners(new USBStorageEvent(device, DeviceEventType.REMOVED)));
+        
+        for(USBStorageDevice device : currentConnectedDevices){
+        	sendEventToListeners(new USBStorageEvent(device, DeviceEventType.CONNECTED));
+        }
+        
+        for(USBStorageDevice device : removedDevices){
+        	sendEventToListeners(new USBStorageEvent(device, DeviceEventType.REMOVED));
+        }
+        
     }
 
     private void sendEventToListeners(final USBStorageEvent event) {
@@ -213,7 +216,7 @@ public class USBDeviceDetectorManager {
          */
         final List<IUSBDriveListener> listenersCopy;
         synchronized (listeners) {
-            listenersCopy = new ArrayList<>(listeners);
+            listenersCopy = new ArrayList<IUSBDriveListener>(listeners);
         }
 
         for (IUSBDriveListener listener : listenersCopy) {
