@@ -5,6 +5,9 @@
 
 A Java library to get a list of all usb storage devices connected to the computer. It works on the three main operating systems (Windows, Linux and OS X).
 
+This was forked to get to Java 1.6 compatibility, but I ended up fixing the Mac and Linux usb detectors along the way. Note that the maven info below does not apply to this fork.
+
+
 ### Maven dependency
 
 To include this library in your project just use:
