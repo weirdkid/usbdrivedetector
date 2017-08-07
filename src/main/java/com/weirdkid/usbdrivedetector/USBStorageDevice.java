@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.samuelcampos.usbdrivedetector;
+package com.weirdkid.usbdrivedetector;
 
 import java.io.File;
 import javax.swing.filechooser.FileSystemView;

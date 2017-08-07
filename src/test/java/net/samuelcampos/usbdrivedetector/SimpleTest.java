@@ -1,7 +1,9 @@
 package net.samuelcampos.usbdrivedetector;
 
-import net.samuelcampos.usbdrivedetector.events.IUSBDriveListener;
-import net.samuelcampos.usbdrivedetector.events.USBStorageEvent;
+import com.weirdkid.usbdrivedetector.USBDeviceDetectorManager;
+import com.weirdkid.usbdrivedetector.USBStorageDevice;
+import com.weirdkid.usbdrivedetector.events.IUSBDriveListener;
+import com.weirdkid.usbdrivedetector.events.USBStorageEvent;
 
 /**
  *

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.samuelcampos.usbdrivedetector.detectors;
+package com.weirdkid.usbdrivedetector.detectors;
 
-import net.samuelcampos.usbdrivedetector.USBStorageDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.weirdkid.usbdrivedetector.USBStorageDevice;
 
 import java.io.Closeable;
 import java.io.File;

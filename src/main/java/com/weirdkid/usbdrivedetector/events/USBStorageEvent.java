@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package net.samuelcampos.usbdrivedetector.events;
+package com.weirdkid.usbdrivedetector.events;
 
-import net.samuelcampos.usbdrivedetector.USBStorageDevice;
+import com.weirdkid.usbdrivedetector.USBStorageDevice;
 
 /**
  *

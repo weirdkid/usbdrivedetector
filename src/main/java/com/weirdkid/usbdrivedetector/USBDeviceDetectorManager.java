@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.samuelcampos.usbdrivedetector;
+package com.weirdkid.usbdrivedetector;
 
-import net.samuelcampos.usbdrivedetector.detectors.AbstractStorageDeviceDetector;
-import net.samuelcampos.usbdrivedetector.events.DeviceEventType;
-import net.samuelcampos.usbdrivedetector.events.IUSBDriveListener;
-import net.samuelcampos.usbdrivedetector.events.USBStorageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.weirdkid.usbdrivedetector.detectors.AbstractStorageDeviceDetector;
+import com.weirdkid.usbdrivedetector.events.DeviceEventType;
+import com.weirdkid.usbdrivedetector.events.IUSBDriveListener;
+import com.weirdkid.usbdrivedetector.events.USBStorageEvent;
 
 import java.util.ArrayList;
 import java.util.HashSet;

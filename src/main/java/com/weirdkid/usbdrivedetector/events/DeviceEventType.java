@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.samuelcampos.usbdrivedetector.events;
+package com.weirdkid.usbdrivedetector.events;
 
 /**
  * Type of events that occur to USB Storage devices.

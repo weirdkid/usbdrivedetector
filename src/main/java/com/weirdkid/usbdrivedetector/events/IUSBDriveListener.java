@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.samuelcampos.usbdrivedetector.events;
+package com.weirdkid.usbdrivedetector.events;
 
 /**
  * Interface to implement by the classes who want to receive notifications when 
