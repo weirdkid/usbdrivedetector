@@ -1,4 +1,4 @@
-package net.samuelcampos.usbdrivedetector;
+package com.weirdkid.usbdrivedetector;
 
 import com.weirdkid.usbdrivedetector.USBDeviceDetectorManager;
 import com.weirdkid.usbdrivedetector.USBStorageDevice;
